@@ -48,11 +48,18 @@ export class InnerSlider extends React.Component {
   trackRefHandler = ref => (this.track = ref);
   adaptHeight = () => {
     if (this.props.adaptiveHeight && this.list) {
-      const elem = this.list.querySelector(
-        `[data-index="${this.state.currentSlide}"]`
-      );
-      this.list.style.height = getHeight(elem) + "px";
-    }
+      let maxHeight = 0;
+      for (let i = 0; i < this.props.slidesToShow; i++) {
+        const slideIndex = this.state.currentSlide + i;
+        const elem = this.list.querySelector(`[data-index="${slideIndex}"]`);
+        maxHeight = Math.max(getHeight(elem), maxHeight);
+      }
+      this.list.style.height = maxHeight + "px";
+    } 
+      //const elem = this.list.querySelector(
+      //  `[data-index="${this.state.currentSlide}"]`
+      //);
+      //this.list.style.height = getHeight(elem) + "px";
   };
   componentDidMount = () => {
     this.props.onInit && this.props.onInit();
